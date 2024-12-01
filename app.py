@@ -1,31 +1,36 @@
 from flask import Flask, render_template, request
+import pandas as pd
+import pickle
 
 app = Flask(__name__)
 
-# Função de avaliação do candidato
-def avaliar_candidato(experiencia, formacao, nota_teste):
-    if experiencia > 5 and formacao == "adequada" and nota_teste > 80:
-        return "Aprovado", "O candidato foi aprovado com base na experiência, formação e nota técnica."
-    elif 3 <= experiencia <= 5 or formacao == "certificações" or 60 <= nota_teste <= 80:
-        return "Aprovado Parcialmente", "O candidato atende parcialmente os requisitos devido à experiência intermediária, certificações ou nota técnica média."
-    else:
-        return "Reprovado", "O candidato foi reprovado devido à pouca experiência, formação inadequada e baixa nota técnica."
+# Carregar o modelo treinado
+model = pickle.load(open('models/model.pkl', 'rb'))
 
-# Rota principal
+
+# Carregar os dados dos candidatos (substituir por sua base de dados)
+df = pd.read_csv('data/candidatos.csv')
+
+# Função para fazer a previsão
+def prever(dados_candidato):
+    # Pré-processar os dados do candidato (ex: transformar em um DataFrame)
+    novo_df = pd.DataFrame([dados_candidato])
+    # Fazer a previsão
+    previsao = model.predict(novo_df)[0]
+    return previsao
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Captura dos dados do formulário
-        experiencia = int(request.form['experiencia'])
+        # Obter os dados do formulário
+        experiencia = request.form['experiencia']
         formacao = request.form['formacao']
-        nota_teste = int(request.form['nota_teste'])
-        
-        # Avaliação do candidato
-        categoria, justificativa = avaliar_candidato(experiencia, formacao, nota_teste)
-        
-        return render_template('gpt.html', categoria=categoria, justificativa=justificativa)
-
-    return render_template('gpt.html', categoria=None, justificativa=None)
+        # ... outros atributos
+        # Fazer a previsão
+        resultado = prever([experiencia, formacao, ...])
+        return render_template('gemini.html', resultado=resultado)
+    else:
+        return render_template('gemini.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,21 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sistema de Seleção de Candidatos</title>
+  </head>
+  <body>
+    <h1>Previsão de Seleção</h1>
+    <form method="POST">
+      <label for="experiencia">Experiência (anos):</label>
+      <input type="number" id="experiencia" name="experiencia" /><br />
+      <label for="formacao">Formação:</label>
+      <input type="text" id="formacao" name="formacao" /><br />
+      <input type="submit" value="Prever" />
+    </form>
+    {% if resultado %}
+    <p>Resultado: {{ resultado }}</p>
+    {% endif %}
+  </body>
+</html>

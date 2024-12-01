@@ -1,0 +1,38 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seleção de Candidatos</title>
+    <link rel="stylesheet" href="/static/gpt.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Sistema de Seleção de Candidatos</h1>
+      <form method="POST">
+        <label for="experiencia">Anos de Experiência:</label>
+        <input type="number" id="experiencia" name="experiencia" required />
+
+        <label for="formacao">Formação Acadêmica:</label>
+        <select id="formacao" name="formacao">
+          <option value="adequada">Adequada</option>
+          <option value="certificações">Certificações</option>
+          <option value="inadequada">Inadequada</option>
+        </select>
+
+        <label for="nota_teste">Nota do Teste Técnico:</label>
+        <input type="number" id="nota_teste" name="nota_teste" required />
+
+        <button type="submit">Avaliar Candidato</button>
+      </form>
+
+      {% if categoria %}
+      <h2>Resultado da Avaliação</h2>
+      <p><strong>Categoria:</strong> {{ categoria }}</p>
+      <p><strong>Justificativa:</strong> {{ justificativa }}</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
